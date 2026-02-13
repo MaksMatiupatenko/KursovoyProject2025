@@ -2,6 +2,7 @@
 
 #include "LongInt.hpp"
 #include "ModularMath.hpp"
+#include "FirstPrimes.hpp"
 
 // bruteforce test
 bool SimplePrimalityTest(LongInt n) {

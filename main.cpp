@@ -2,6 +2,7 @@
 #include "ModularMath.hpp"
 #include "Random.hpp"
 #include "PrimalityTest.hpp"
+#include "FirstPrimes.hpp"
 
 #include <iostream>
 #include <vector>
@@ -25,8 +26,11 @@ LongInt NDigitPrime(int d) {
 int main()
 {
     while (true) {
-        int n;
+        size_t n;
         std::cin >> n;
-        std::cout << NDigitPrime(n) << '\n';
+        first_primes.init(n);
+        for (size_t i = 0; i < first_primes.cnt(); ++i) {
+            std::cout << first_primes.get(i) << '\n';
+        }
     }
 }
