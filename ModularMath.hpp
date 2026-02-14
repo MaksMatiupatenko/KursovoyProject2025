@@ -14,3 +14,19 @@ LongInt PowMod(LongInt a, LongInt n, LongInt m) {
     }
     return res;
 }
+
+LongInt Gcd(LongInt a, LongInt b) {
+    while (b != 0) {
+        LongInt tmp = a % b;
+        a = b;
+        b = tmp;
+    }
+    return a;
+}
+
+LongInt Abs(LongInt n) {
+    if (n < 0) {
+        return -n;
+    }
+    return n;
+}

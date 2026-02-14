@@ -44,5 +44,9 @@ public:
     size_t cnt() {
         return list.size();
     }
+
+    size_t GetBound() {
+        return bound;
+    }
 };
 static FirstPrimes first_primes;

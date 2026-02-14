@@ -3,6 +3,7 @@
 #include "Random.hpp"
 #include "PrimalityTest.hpp"
 #include "FirstPrimes.hpp"
+#include "Factorization.hpp"
 
 #include <iostream>
 #include <vector>
@@ -23,14 +24,14 @@ LongInt NDigitPrime(int d) {
     return BiggerPrime(pw + RandUnder(pw * 8));
 }
 
-int main()
-{
+int main() {
     while (true) {
-        size_t n;
+        LongInt n;
         std::cin >> n;
-        first_primes.init(n);
-        for (size_t i = 0; i < first_primes.cnt(); ++i) {
-            std::cout << first_primes.get(i) << '\n';
+        auto v = PollardRhoFactorization(n);
+        // std::cout << v.size() << '\n';
+        for (auto x : v) {
+            std::cout << x << '\n';
         }
     }
 }
