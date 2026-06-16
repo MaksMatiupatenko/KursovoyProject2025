@@ -2,4 +2,6 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
-using LongInt = boost::multiprecision::cpp_int;
+namespace prime {
+    using LongInt = boost::multiprecision::cpp_int;
+};
