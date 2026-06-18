@@ -8,4 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(Boost REQUIRED)
 
 add_executable(prime main.cpp Random.cpp FirstPrimes.cpp)
-target_link_libraries(prime PRIVATE Boost::headers) 
+target_link_libraries(prime PRIVATE Boost::headers)
+target_compile_options(prime PRIVATE -O3 -march=native)
+

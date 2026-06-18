@@ -27,15 +27,25 @@ namespace prime {
         return res;
     }
 
-    LongInt FindDivisorPollardRho(LongInt n, size_t max_iter = -1) {
+    LongInt FindDivisorPollardRho(LongInt n, long long max_iter) {
         LongInt c = random.uniform(n);
         auto f = [&c](LongInt x) {
             return x * x + c;
         };
 
+        if (max_iter == 0) {
+            max_iter = (1ll << 62);
+        } else if (max_iter == -1) {
+            if (n >= 1'000'000'000) {
+                max_iter = (long long)(10 * Sqrt(Sqrt(n)));
+            } else {
+                max_iter = 100000;
+            }
+        }
+
         LongInt x1 = 0;
         LongInt x2 = x1;
-        size_t iter = 0;
+        int iter = 0;
         while (iter < max_iter) {
             ++iter;
             LongInt g = Gcd(Abs(x1 - x2), n);
@@ -50,12 +60,12 @@ namespace prime {
     }
     void RecursiveFactorizePollardRho(LongInt n,
                                       std::vector<LongInt>* out,
-                                      size_t max_iter = 100000) {
+                                      long long max_iter) {
 
         while (n != 1 && TestPrimalityMillerRabin(n) == PrimalityStatus::PROVED_COMPOSITE) {
             LongInt d = FindDivisorPollardRho(n, max_iter);
             if (d != n) {
-                RecursiveFactorizePollardRho(d, out);
+                RecursiveFactorizePollardRho(d, out, max_iter);
                 n /= d;
             }
         }
@@ -92,7 +102,7 @@ namespace prime {
     }
 
     std::vector<LongInt> FactorizePollardRho(LongInt n,
-                                             size_t max_iter = 100000,
+                                             long long max_iter = -1,
                                              size_t small_primes_bound = 100000) {
 
         auto [res, x] = FactorizeUpToBound(n, small_primes_bound);
@@ -279,7 +289,7 @@ namespace prime {
 
     std::vector<LongInt> FactorizeQuadraticSieve(LongInt n,
                                                  int factorBaseBound = 200000,
-                                                 int oversampling = 40,
+                                                 int oversampling = 10,
                                                  int mx_prime_power = 4) {
         auto [res, x] = FactorizeUpToBound(n, factorBaseBound);
         RecursiveFactorizeQuadraticSieve(x, &res, factorBaseBound, oversampling, mx_prime_power);

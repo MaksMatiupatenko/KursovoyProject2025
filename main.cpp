@@ -27,28 +27,54 @@ namespace {
             }
         }
     }
+    prime::LongInt RandomNDigit(int d) {
+        prime::LongInt pw = 1;
+        for (int i = 0; i < d - 1; ++i) {
+            pw *= 10;
+        }
+        return prime::random.uniform(pw, pw * 10);
+    }
 };
 
 
 int main() {
-    while (true) {
-        int len, cnt;
-        // std::cin >> len >> cnt;
-        // len = (int)prime::random.uniform(8, 12);
-        // cnt = (int)prime::random.uniform(2, 3);
-        len = 13;
-        cnt = 2;
+    prime::Clock clock{};
+
+    int len, alg, tests, type;
+    std::cin >> len >> alg >> tests >> type;
+    float sum = 0, mx = 0;
+    for (int i = 0; i < tests; ++i) {
         prime::LongInt num = 1;
-        for (int i = 0; i < cnt; ++i) {
-            num *= ::FindNDigitPrime(len);
+        if (type == 1) {
+            for (int i = 0; i < 2; ++i) {
+                num *= ::FindNDigitPrime(len / 2);
+            }
+        } else {
+            num = ::RandomNDigit(len);
         }
+
         std::cout << num << '\n';
-        prime::Clock clock{};
-        // auto res = prime::FactorizePollardRho(num);
-        auto res = prime::FactorizeQuadraticSieve(num, 200000);
+        
+        
+        std::vector<prime::LongInt> res;
+        clock.Restart();
+        if (alg == 1) {
+            res = prime::FactorizeSimple(num);
+        } else if (alg == 2) {
+            res = prime::FactorizePollardRho(num);
+        } else {
+            res = prime::FactorizeQuadraticSieve(num);
+        }
+        float t = clock.Time();
+
         for (const auto& x : res) {
             std::cout << x << '\n';
         }
-        std::cout << "Time: " << clock.Time() << " seconds\n";
+
+        sum += t;
+        mx = std::max(mx, t);
     }
+    
+    std::cout << "Avg: " << sum / tests << " seconds\n";
+    std::cout << "Max: " << mx << " seconds\n";
 }
